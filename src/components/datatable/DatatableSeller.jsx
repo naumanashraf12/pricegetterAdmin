@@ -2,7 +2,7 @@ import "./datatable.scss";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { getUsers } from "../../store/api";
+import { getSellers, getUsers } from "../../store/api";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -10,15 +10,15 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { useUserDel } from "../../hooks/Usershooks";
-import ClearIcon from "@mui/icons-material/Clear";
+import { useSellerDel } from "../../hooks/Usershooks";
 import Loader from "../../pages/Loader/Loader";
+import ClearIcon from "@mui/icons-material/Clear";
 
-const Datatable = () => {
-  const { data, error, isLoading } = useQuery("getUsers", () => {
-    return getUsers().then((res) => res);
+const DatatableSeller = () => {
+  const { data, error, isLoading } = useQuery("getSeller", () => {
+    return getSellers().then((res) => res);
   });
-  const { mutate } = useUserDel();
+  const { mutate } = useSellerDel();
 
   return (
     <>
@@ -76,4 +76,4 @@ const Datatable = () => {
   );
 };
 
-export default Datatable;
+export default DatatableSeller;

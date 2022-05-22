@@ -5,8 +5,17 @@ import Widget from "../../components/widget/Widget";
 import Featured from "../../components/featured/Featured";
 import Chart from "../../components/chart/Chart";
 import Table from "../../components/table/Table";
-
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 const Home = () => {
+  const navigate = useNavigate();
+  const tokens = localStorage.getItem("token");
+  const [token, setToken] = useState(tokens);
+  useEffect(() => {
+    if (!token) {
+      navigate("/");
+    }
+  }, [token]);
   return (
     <div className="home">
       <Sidebar />
@@ -21,10 +30,6 @@ const Home = () => {
         <div className="charts">
           <Featured />
           <Chart title="Last 6 Months (Revenue)" aspect={2 / 1} />
-        </div>
-        <div className="listContainer">
-          <div className="listTitle">Latest Transactions</div>
-          <Table />
         </div>
       </div>
     </div>

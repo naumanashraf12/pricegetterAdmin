@@ -1,8 +1,7 @@
 import "./datatable.scss";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+
 import { useQuery } from "react-query";
-import { getUsers } from "../../store/api";
+import { getPendingSellers } from "../../store/api";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -10,16 +9,16 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { useUserDel } from "../../hooks/Usershooks";
-import ClearIcon from "@mui/icons-material/Clear";
+import { useApproveASuser, useSellerApprove } from "../../hooks/Usershooks";
+import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import Loader from "../../pages/Loader/Loader";
-
-const Datatable = () => {
-  const { data, error, isLoading } = useQuery("getUsers", () => {
-    return getUsers().then((res) => res);
+import ClearIcon from "@mui/icons-material/Clear";
+const DatatableSellerPending = () => {
+  const { data, error, isLoading } = useQuery("getSellerPending", () => {
+    return getPendingSellers().then((res) => res);
   });
-  const { mutate } = useUserDel();
-
+  const { mutate } = useApproveASuser();
+  const { mutate: asUser } = useSellerApprove();
   return (
     <>
       {isLoading ? (
@@ -50,20 +49,31 @@ const Datatable = () => {
                       {new Date(row?.createdAt).toISOString().split("T")[0]}
                     </TableCell>
                     <TableCell>
-                      <ClearIcon
+                      <DoneOutlineIcon
                         style={{
-                          color: "red",
+                          color: "green",
                           borderRadius: "20px",
                           borderColor: "white",
                           padding: "5px",
                           cursor: "pointer",
                         }}
                         onClick={() => {
-                          mutate({ id: row._id });
+                          asUser(row._id);
                         }}
-                      >
-                        Remove
-                      </ClearIcon>
+                      ></DoneOutlineIcon>
+                      <ClearIcon
+                        style={{
+                          color: "red",
+                          borderRadius: "20px",
+                          borderColor: "white",
+                          marginLeft: "10px",
+                          padding: "5px",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => {
+                          mutate(row._id);
+                        }}
+                      ></ClearIcon>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -76,4 +86,4 @@ const Datatable = () => {
   );
 };
 
-export default Datatable;
+export default DatatableSellerPending;

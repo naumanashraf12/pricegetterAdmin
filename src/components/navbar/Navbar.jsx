@@ -1,23 +1,39 @@
 import "./navbar.scss";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import FullscreenExitOutlinedIcon from "@mui/icons-material/FullscreenExitOutlined";
-import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
-import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
-import ListOutlinedIcon from "@mui/icons-material/ListOutlined";
+
 import { DarkModeContext } from "../../context/darkModeContext";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const { dispatch } = useContext(DarkModeContext);
+  const [title, setTitle] = useState("Dashboard");
+  const path = useLocation().pathname;
+  console.log(path);
+  useEffect(() => {
+    switch (path) {
+      case "/home":
+        setTitle("Dashboard");
+        break;
+      case "/users":
+        setTitle("Users");
+        break;
+      case "/sellers":
+        setTitle("Sellers");
+        break;
+      case "/sellerReqs":
+        setTitle("Sellers Pending Requests");
+        break;
+      default:
+        setTitle("Dashboard");
+    }
+  });
 
   return (
     <div className="navbar">
       <div className="wrapper">
         <div className="search">
-          <input type="text" placeholder="Search..." />
-          <SearchOutlinedIcon />
+          <h2>{title}</h2>
         </div>
         <div className="items">
           <div className="item">
