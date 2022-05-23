@@ -29,3 +29,7 @@ export const sellerdisapprove = (id) =>
   AxiosBase.patch(`/admin/sellers/${id}`, tokenConfig);
 export const delSeller = (id) =>
   AxiosBase.delete(`/admin/sellers/${id}`, tokenConfig);
+export const totalUsers = () =>
+  AxiosBase.get(`/admin/getUsersCount`, tokenConfig);
+export const totalProducts = () =>
+  AxiosBase.get(`/admin/getProductsCount`, tokenConfig);
