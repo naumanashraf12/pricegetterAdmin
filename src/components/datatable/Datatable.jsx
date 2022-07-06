@@ -1,5 +1,5 @@
 import "./datatable.scss";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import { getUsers } from "../../store/api";
@@ -15,6 +15,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import Loader from "../../pages/Loader/Loader";
 
 const Datatable = () => {
+  const navigate = useNavigate();
   const { data, error, isLoading } = useQuery("getUsers", () => {
     return getUsers().then((res) => res);
   });
@@ -33,13 +34,23 @@ const Datatable = () => {
                   <TableCell className="tableCell">Name</TableCell>
                   <TableCell className="tableCell">Email</TableCell>
                   <TableCell className="tableCell">Created At</TableCell>
+
                   <TableCell className="tableCell">Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {data.data.data.data.map((row) => (
                   <TableRow key={row._id}>
-                    <TableCell className="tableCell">{row.name}</TableCell>
+                    <TableCell
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        navigate(`/user/${row._id}`);
+                      }}
+                      className="tableCell"
+                    >
+                      {row.name}
+                    </TableCell>
+
                     <TableCell className="tableCell">
                       <div className="cellWrapper">
                         {<img src={row.avatar.url} alt="" className="image" />}
@@ -49,6 +60,7 @@ const Datatable = () => {
                     <TableCell className="tableCell">
                       {new Date(row?.createdAt).toISOString().split("T")[0]}
                     </TableCell>
+
                     <TableCell>
                       <ClearIcon
                         style={{

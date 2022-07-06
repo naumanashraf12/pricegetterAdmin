@@ -13,7 +13,9 @@ import { useApproveASuser, useSellerApprove } from "../../hooks/Usershooks";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import Loader from "../../pages/Loader/Loader";
 import ClearIcon from "@mui/icons-material/Clear";
+import { useNavigate } from "react-router-dom";
 const DatatableSellerPending = () => {
+  const navigate = useNavigate();
   const { data, error, isLoading } = useQuery("getSellerPending", () => {
     return getPendingSellers().then((res) => res);
   });
@@ -38,7 +40,15 @@ const DatatableSellerPending = () => {
               <TableBody>
                 {data.data.data.data.map((row) => (
                   <TableRow key={row._id}>
-                    <TableCell className="tableCell">{row.name}</TableCell>
+                    <TableCell
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        navigate(`/user/${row._id}`);
+                      }}
+                      className="tableCell"
+                    >
+                      {row.name}
+                    </TableCell>
                     <TableCell className="tableCell">
                       <div className="cellWrapper">
                         {<img src={row.avatar.url} alt="" className="image" />}

@@ -1,5 +1,10 @@
 import { useMutation, useQueryClient } from "react-query";
-import { delUser, sellerapprove, sellerdisapprove } from "../store/api";
+import {
+  delUser,
+  sellerapprove,
+  sellerdisapprove,
+  singleUser,
+} from "../store/api";
 const delUsers = ({ id }) => {
   return delUser(id, { action: "approve" });
 };
@@ -8,6 +13,9 @@ const delSeller = ({ id }) => {
 };
 const ApproveSeller = (id) => {
   return sellerapprove(id);
+};
+const SingleUser = (id) => {
+  return singleUser(id);
 };
 const DisapproveSeller = (id) => {
   return sellerdisapprove(id);
@@ -23,6 +31,14 @@ export const useUserDel = () => {
 export const useSellerDel = () => {
   const queryClient = useQueryClient();
   return useMutation(delSeller, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("getSeller");
+    },
+  });
+};
+export const useUserGet = () => {
+  const queryClient = useQueryClient();
+  return useMutation(SingleUser, {
     onSuccess: () => {
       queryClient.invalidateQueries("getSeller");
     },

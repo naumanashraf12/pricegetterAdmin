@@ -1,5 +1,5 @@
 import "./datatable.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import { getSellers, getUsers } from "../../store/api";
@@ -15,6 +15,7 @@ import Loader from "../../pages/Loader/Loader";
 import ClearIcon from "@mui/icons-material/Clear";
 
 const DatatableSeller = () => {
+  const navigate = useNavigate();
   const { data, error, isLoading } = useQuery("getSeller", () => {
     return getSellers().then((res) => res);
   });
@@ -39,7 +40,15 @@ const DatatableSeller = () => {
               <TableBody>
                 {data.data.data.data.map((row) => (
                   <TableRow key={row._id}>
-                    <TableCell className="tableCell">{row.name}</TableCell>
+                    <TableCell
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        navigate(`/user/${row._id}`);
+                      }}
+                      className="tableCell"
+                    >
+                      {row.name}
+                    </TableCell>
                     <TableCell className="tableCell">
                       <div className="cellWrapper">
                         {<img src={row.avatar.url} alt="" className="image" />}

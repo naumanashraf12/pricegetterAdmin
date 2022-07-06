@@ -4,6 +4,7 @@ import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const { dispatch } = useContext(DarkModeContext);
@@ -28,6 +29,7 @@ const Navbar = () => {
         setTitle("Dashboard");
     }
   });
+  const { user } = useSelector((state) => state.auth);
 
   return (
     <div className="navbar">
@@ -35,6 +37,10 @@ const Navbar = () => {
         <div className="search">
           <h2>{title}</h2>
         </div>
+        <div className="search">
+          {user.name && <h2>{`welcome   ${user.name}`}</h2>}
+        </div>
+
         <div className="items">
           <div className="item">
             <DarkModeOutlinedIcon
@@ -44,11 +50,7 @@ const Navbar = () => {
           </div>
 
           <div className="item">
-            <img
-              src="https://images.pexels.com/photos/941693/pexels-photo-941693.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
-              alt=""
-              className="avatar"
-            />
+            <img src={user?.avatar?.url} alt="" className="avatar" />
           </div>
         </div>
       </div>

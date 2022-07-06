@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { postLogin } from "./api";
+import { loadUsers, postLogin } from "./api";
 
 const initialState = {
   loading: false,
@@ -30,6 +30,11 @@ const authSlice = createSlice({
       localStorage.removeItem("token");
       return {};
     },
+    loaduser(state, action) {
+      state.user = action.payload.data.user;
+      state.token = action.payload.token;
+      state.isAuth = true;
+    },
   },
 });
 export const { requestlogin, getlogin, errorlogin, clearErrors, logout } =
@@ -40,6 +45,17 @@ export function Logins({ password, email }) {
       dispatch(requestlogin());
       const { data } = await postLogin(email, password);
       localStorage.setItem("token", data.token);
+      dispatch(getlogin(data));
+    } catch (error) {
+      dispatch(errorlogin(error.response.data.message));
+    }
+  };
+}
+export function laodUser() {
+  return async function loadThunk(dispatch, getstate) {
+    try {
+      dispatch(requestlogin());
+      const { data } = await loadUsers();
       dispatch(getlogin(data));
     } catch (error) {
       dispatch(errorlogin(error.response.data.message));

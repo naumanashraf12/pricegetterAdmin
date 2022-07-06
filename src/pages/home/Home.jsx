@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { totalProducts, totalUsers } from "../../store/api";
 import Loader from "../Loader/Loader";
+import { useSelector } from "react-redux";
 const Home = () => {
   const navigate = useNavigate();
   const tokens = localStorage.getItem("token");
@@ -15,9 +16,9 @@ const Home = () => {
   const [totalUser, setUsers] = useState({});
   const [totalProduct, setProducts] = useState({});
   const [loading, setLoading] = useState(true);
-
+  const { isAuth, token: tk, error } = useSelector((state) => state.auth);
   useEffect(() => {
-    if (!token) {
+    if (tokens === undefined) {
       navigate("/");
     }
     totalUsers().then((res) => {
